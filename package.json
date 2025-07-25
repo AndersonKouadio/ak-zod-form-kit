@@ -1,0 +1,71 @@
+{
+  "name": "ak-zod-form-kit",
+  "version": "1.0.0",
+  "description": "A powerful utility library for processing, transforming, and validating form data with Zod.",
+  "keywords": [
+    "zod",
+    "form",
+    "validation",
+    "typescript",
+    "formdata",
+    "react",
+    "vue",
+    "angular",
+    "form-handling",
+    "data-transformation",
+    "utility"
+  ],
+  "homepage": "https://github.com/AndersonKouadio/ak-zod-form-kit#readme",
+  "bugs": {
+    "url": "https://github.com/AndersonKouadio/ak-zod-form-kit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndersonKouadio/ak-zod-form-kit.git"
+  },
+  "license": "MIT",
+  "author": "Anderson Kouadio <andersonkouadio0109@gmail.com>",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "npm run build:cjs && npm run build:esm && npm run build:types",
+    "build:cjs": "tsc --project tsconfig.build.json --module CommonJS --outDir dist",
+    "build:esm": "tsc --project tsconfig.build.json --module ESNext --outDir dist/esm",
+    "build:types": "tsc --project tsconfig.build.json --declaration --emitDeclarationOnly --outDir dist",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts tests/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts tests/**/*.ts --fix",
+    "prepublishOnly": "npm run build && npm test && npm run lint",
+    "prepare": "npm run build"
+  },
+  "peerDependencies": {
+    "zod": "^4.0.10"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@typescript-eslint/parser": "^8.38.0",
+    "eslint": "^9.31.0",
+    "eslint-plugin-jest": "^29.0.1",
+    "globals": "^16.3.0",
+    "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5",
+    "ts-jest": "^29.4.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0",
+    "zod": "^4.0.10"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
