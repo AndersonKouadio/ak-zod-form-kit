@@ -27,3 +27,6 @@ coverage/
 *.tgz
 .DS_Store
 Thumbs.db
+
+# scripts
+scripts/add-esm-package-json.js

@@ -23,3 +23,6 @@ coverage/
 # Environment variables
 .env
 .env.local
+
+# scripts
+scripts/add-esm-package-json.js
