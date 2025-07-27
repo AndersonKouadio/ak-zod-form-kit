@@ -1,6 +1,6 @@
 {
   "name": "ak-zod-form-kit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A powerful utility library for processing, transforming, and validating form data with Zod.",
   "keywords": [
     "zod",
@@ -26,19 +26,30 @@
   "license": "MIT",
   "author": "Anderson Kouadio <andersonkouadio0109@gmail.com>",
   "type": "commonjs",
-  "main": "dist/index.js",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/cjs/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "build": "npm run build:cjs && npm run build:esm && npm run build:types",
-    "build:cjs": "tsc --project tsconfig.build.json --module CommonJS --outDir dist",
-    "build:esm": "tsc --project tsconfig.build.json --module ESNext --outDir dist/esm",
-    "build:types": "tsc --project tsconfig.build.json --declaration --emitDeclarationOnly --outDir dist",
+    "clean": "rimraf dist",
+    "build": "npm run clean && npm run build:types && npm run build:cjs && npm run build:esm",
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build:esm": "tsc --project tsconfig.esm.json",
+    "build:types": "tsc --project tsconfig.types.json",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "lint": "eslint src/**/*.ts tests/**/*.ts",
@@ -47,7 +58,7 @@
     "prepare": "npm run build"
   },
   "peerDependencies": {
-    "zod": "^4.0.10"
+    "zod": "^3.20.0 || ^4.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",
@@ -60,6 +71,7 @@
     "globals": "^16.3.0",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
+    "rimraf": "^6.0.1",
     "ts-jest": "^29.4.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",

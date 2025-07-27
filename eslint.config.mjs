@@ -45,7 +45,7 @@ export default [
       parserOptions: {
         ecmaVersion: "latest", // Dernière version d'ECMAScript
         sourceType: "module", // Utilise les modules ES (import/export)
-        project: "./tsconfig.json", // **TRÈS IMPORTANT** pour les règles qui nécessitent des informations de type
+        project: "./tsconfig.types.json", // **TRÈS IMPORTANT** pour les règles qui nécessitent des informations de type
         // Permet l'analyse de JSX si votre librairie devait inclure des composants (peu probable ici)
         // ecmaFeatures: { jsx: true },
       },
