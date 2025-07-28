@@ -1,6 +1,26 @@
 import * as z from 'zod';
 
 /**
+ * Stratégies de validation pour contrôler le comportement des champs
+ *
+ * - `strict` : Validation stricte, rejette tout champ non déclaré (défaut)
+ * - `allowExtraFields` : Autorise les champs supplémentaires sans validation
+ * - `removeExtraFields` : Supprime silencieusement les champs non déclarés
+ * - `partial-strict` : Rend les champs optionnels mais rejette les extras
+ * - `partial` : Rend les champs optionnels
+ */
+export type ValidationStrategy = 'strict' | 'allowExtraFields' | 'removeExtraFields' | 'partial-strict' | 'partial';
+
+/**
+ * Modifications structurelles possibles du schéma
+ *
+ * - `default` : Aucune modification structurelle (défaut)
+ * - `mergeWithAnd` : Combine avec d'autres schémas (ET logique)
+ * - `mergeWithOr` : Valide contre plusieurs schémas (OU logique)
+ */
+export type SchemaModification = 'default' | 'mergeWithAnd' | 'mergeWithOr';
+
+/**
  * Type utilitaire pour extraire le type inféré d'un champ d'un schéma Zod.
  * Il permet d'obtenir le type TypeScript précis qui sera produit après la validation Zod d'un champ donné.
  *
@@ -15,11 +35,7 @@ import * as z from 'zod';
  * // Pour un champ `z.number().optional()`
  * type MyOptionalNumberType = SchemaFieldType<typeof z.number().optional()>; // Résout à `number | undefined`
  */
-export type SchemaFieldType<T extends z.ZodTypeAny> = T extends z.ZodType<
-  infer U
->
-  ? U
-  : never;
+export type SchemaFieldType<T extends z.ZodTypeAny> = T extends z.ZodType<infer U> ? U : never;
 
 /**
  * Définit les options configurables pour l'extraction de données à partir d'un objet FormData ou d'un objet JavaScript.
@@ -48,6 +64,7 @@ export interface FormDataExtractionOptions {
    * ['firstName', 'lastName', 'email']
    */
   includeFields?: string[];
+
 }
 
 /**
@@ -57,14 +74,32 @@ export interface FormDataExtractionOptions {
  */
 export interface FormDataProcessingOptions<T extends z.ZodRawShape>
   extends FormDataExtractionOptions {
+
   /**
-   * Indique si la validation doit s'effectuer en utilisant un schéma Zod dynamique (par `createDynamicZodSchema`).
-   * Si `true` (par défaut), le schéma s'adapte aux champs présents dans les données, acceptant `z.unknown()`
-   * pour les champs non définis dans le schéma de base. Si `false`, seule la validation stricte du `schema`
-   * fourni est appliquée, ce qui peut entraîner des erreurs pour les champs "extra".
-   * @default true
+  * La **stratégie de validation** à utiliser pour contrôler le comportement des champs du schéma dynamique.
+  * Elle détermine comment Zod gère les champs non déclarés (les autorise, les supprime, ou les rejette)
+  * et définit l'optionalité des champs au niveau racine ou de manière récursive.
+  *
+  * @default 'strict'
+  */
+  validationStrategy?: ValidationStrategy;
+
+  /**
+   * La **modification structurelle** à appliquer au schéma de base avant toute validation.
+   * Ce paramètre permet de combiner le schéma principal avec d'autres schémas via des logiques
+   * de fusion (AND) ou d'union (OR), modifiant ainsi la forme attendue des données.
+   *
+   * @default 'default'
    */
-  useDynamicValidation?: boolean;
+  schemaModification?: SchemaModification;
+
+  /**
+   * Un tableau de **schémas Zod supplémentaires** à utiliser en conjonction avec la `schemaModification`.
+   * Si `schemaModification` est défini sur `'mergeWithAnd'`, ces schémas seront fusionnés (logique ET)
+   * avec le schéma de base. Si c'est `'mergeWithOr'`, une union (logique OU) sera créée entre tous les schémas.
+   */
+  additionalSchemas?: z.ZodTypeAny[];
+
   /**
    * Un objet de fonctions de transformation personnalisées à appliquer aux champs après l'extraction
    * mais avant la validation Zod finale. Ces transformations s'ajoutent à celles potentiellement
@@ -77,8 +112,8 @@ export interface FormDataProcessingOptions<T extends z.ZodRawShape>
    */
   transformations?: {
     [K in keyof T]?: T[K] extends z.ZodTypeAny
-      ? (value: SchemaFieldType<T[K]>) => SchemaFieldType<T[K]>
-      : never;
+    ? (value: SchemaFieldType<T[K]>) => SchemaFieldType<T[K]>
+    : never;
   };
   /**
    * Spécifie le format de sortie des données en cas de succès de la validation.
@@ -102,12 +137,13 @@ export interface FormDataProcessingOptions<T extends z.ZodRawShape>
  */
 export type ProcessedFormDataResult<T extends z.ZodRawShape> =
   | {
-      success: true;
-      data: z.infer<z.ZodObject<T>> | FormData; // Les données validées, soit en objet, soit en FormData
-    }
+    success: true;
+    data: z.infer<z.ZodObject<T>> | FormData; // Les données validées, soit en objet, soit en FormData
+  }
   | {
-      success: false;
-      data: Record<string, unknown>; // Les données (brutes/transformées) en cas d'échec pour le débogage/affichage
-      errors: Record<string, string>; // Erreurs formatées en objet
-      errorsInArray: { key: string; message: string }[]; // Erreurs formatées en tableau
-    };
+    success: false;
+    data: Record<string, unknown>; // Les données (brutes/transformées) en cas d'échec pour le débogage/affichage
+    errors: Record<string, string>; // Erreurs formatées en objet
+    errorsInArray: { key: string; message: string }[]; // Erreurs formatées en tableau
+    errorsInString: string; // Erreurs formatées en chaîne de caractères
+  };

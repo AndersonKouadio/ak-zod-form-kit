@@ -1,6 +1,6 @@
 {
   "name": "ak-zod-form-kit",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A powerful utility library for processing, transforming, and validating form data with Zod.",
   "keywords": [
     "zod",
