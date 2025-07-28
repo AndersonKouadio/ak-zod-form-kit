@@ -1,25 +1,26 @@
-🚀 AK Zod Form Kit
-Une librairie TypeScript moderne qui transforme vos formulaires en APIs typées sans effort ! ✨
+# 🚀 AK Zod Form Kit
 
-AK Zod Form Kit simplifie drastiquement le traitement, la transformation et la validation des données de formulaire en utilisant la puissance de Zod. Fini les validations manuelles fastidieuses et les casse-têtes de typage – transformez vos données brutes en objets typés et validés en une seule ligne !
+Une librairie TypeScript moderne qui transforme vos formulaires en APIs typées sans effort \! ✨
 
-🎯 Pourquoi AK Zod Form Kit ?
-En tant que développeurs, nous passons une part significative de notre temps à gérer des formulaires et à préparer des données pour nos APIs. Ce processus est souvent répétitif, sujet aux erreurs et peut transformer un simple formulaire en un cauchemar de typage. AK Zod Form Kit est né de ce constat pour vous offrir une solution robuste, élégante et amusante.
+AK Zod Form Kit simplifie drastiquement le traitement, la transformation et la validation des données de formulaire en utilisant la puissance de **Zod**. Fini les validations manuelles fastidieuses et les casse-têtes de typage – transformez vos données brutes en objets typés et validés en une seule ligne \!
+
+-----
+
+## 🎯 Pourquoi AK Zod Form Kit ?
+
+En tant que développeurs, nous passons une part significative de notre temps à gérer des formulaires et à préparer des données pour nos APIs. Ce processus est souvent répétitif, sujet aux erreurs et peut transformer un simple formulaire en un cauchemar de typage. **AK Zod Form Kit** est né de ce constat pour vous offrir une solution robuste, élégante et amusante.
 
 Imaginez :
 
-Vous recevez des données d'un formulaire HTML (FormData) avec des noms de champs non standard (user_first_name, email_address_input).
+  * Vous recevez des données d'un formulaire HTML (`FormData`) avec des noms de champs non standard (`user_first_name`, `email_address_input`).
+  * Vous devez nettoyer ces données (trimmer les espaces, mettre en minuscules).
+  * Vous avez des champs optionnels, des champs qui doivent être supprimés, ou des champs supplémentaires que votre API peut ignorer.
+  * Vous devez fusionner ces données avec des informations de session ou d'autres sources (un `userId`, une date de création).
+  * Et bien sûr, tout cela doit être rigoureusement validé selon un schéma précis, avec des messages d'erreur clairs pour l'utilisateur.
 
-Vous devez nettoyer ces données (trimmer les espaces, mettre en minuscules).
+**AK Zod Form Kit transforme ce défi en une brise \!**
 
-Vous avez des champs optionnels, des champs qui doivent être supprimés, ou des champs supplémentaires que votre API peut ignorer.
-
-Vous devez fusionner ces données avec des informations de session ou d'autres sources (un userId, une date de création).
-
-Et bien sûr, tout cela doit être rigoureusement validé selon un schéma précis, avec des messages d'erreur clairs pour l'utilisateur.
-
-AK Zod Form Kit transforme ce défi en une brise !
-
+```typescript
 // ❌ Avant : Code verbeux et répétitif, source d'erreurs de typage
 
 function handleForm(formData: FormData) {
@@ -91,17 +92,27 @@ function handleSubmit(event: Event) {
     console.log("Erreurs en chaîne:", result.errorsInString); // "Nom requis...\nEmail invalide..."
   }
 }
+```
 
-🚀 Installation
+-----
+
+## 🚀 Installation
+
+```bash
 npm install ak-zod-form-kit zod
 # ou
 yarn add ak-zod-form-kit zod
 # ou
 pnpm add ak-zod-form-kit zod
+```
 
-⚡ Démarrage rapide
+-----
+
+## ⚡ Démarrage rapide
+
 Commencez à valider vos formulaires en quelques étapes simples :
 
+```typescript
 import { z } from 'zod';
 import { processAndValidateFormData } from 'ak-zod-form-kit';
 
@@ -140,70 +151,92 @@ async function handleSubmit(event: React.FormEvent<HTMLFormElement>) { // Exempl
 
 // Exemple d'attachement pour Vanilla JS:
 // document.getElementById('my-contact-form').addEventListener('submit', handleSubmit);
+```
 
-🌟 Fonctionnalités principales
-AK Zod Form Kit est conçu pour être votre couteau suisse pour la gestion des données de formulaire.
+-----
 
-🧠 Stratégies de Validation Intelligentes
-Contrôlez précisément comment Zod gère les champs non déclarés ou l'optionalité des champs grâce à la validationStrategy.
+## 🌟 Fonctionnalités principales
 
-'strict' (Défaut) : Seuls les champs définis dans votre schéma sont acceptés. Tout champ supplémentaire déclenchera une erreur. Idéal pour des APIs strictes.
+**AK Zod Form Kit** est conçu pour être votre couteau suisse pour la gestion des données de formulaire.
 
-const StrictSchema = z.object({ id: z.string() });
-// { id: "123", extra: "value" } ➡️ Échec (extra non reconnu)
+### 🧠 Stratégies de Validation Intelligentes
 
-'allowExtraFields' : Accepte tous les champs supplémentaires non définis dans le schéma comme unknown. Parfait pour les APIs flexibles ou les formulaires qui peuvent contenir des données inattendues.
+Contrôlez précisément comment Zod gère les champs non déclarés ou l'optionalité des champs grâce à la `validationStrategy`.
 
-const AllowExtraSchema = z.object({ id: z.string() });
-// { id: "123", extra: "value" } ➡️ Succès (extra est inclus)
+  * **'strict'** (Défaut) : Seuls les champs définis dans votre schéma sont acceptés. Tout champ supplémentaire déclenchera une erreur. Idéal pour des APIs strictes.
 
-'removeExtraFields' : Supprime silencieusement tous les champs non définis dans le schéma. Utile pour nettoyer les données avant l'envoi à une API qui n'attend que des champs spécifiques.
+    ```typescript
+    const StrictSchema = z.object({ id: z.string() });
+    // { id: "123", extra: "value" } ➡️ Échec (extra non reconnu)
+    ```
 
-const RemoveExtraSchema = z.object({ id: z.string() });
-// { id: "123", extra: "value" } ➡️ Succès (extra est supprimé)
+  * **'allowExtraFields'** : Accepte tous les champs supplémentaires non définis dans le schéma comme `unknown`. Parfait pour les APIs flexibles ou les formulaires qui peuvent contenir des données inattendues.
 
-'partial-strict' : Rend tous les champs de niveau racine du schéma optionnels, mais rejette tout champ supplémentaire non défini. Idéal pour les mises à jour partielles où la structure des données doit rester contrôlée.
+    ```typescript
+    const AllowExtraSchema = z.object({ id: z.string() });
+    // { id: "123", extra: "value" } ➡️ Succès (extra est inclus)
+    ```
 
-const PartialStrictSchema = z.object({ name: z.string(), email: z.string() });
-// { name: "Alice" } ➡️ Succès (email est optionnel)
-// { name: "Alice", extra: "value" } ➡️ Échec (extra non reconnu)
+  * **'removeExtraFields'** : Supprime silencieusement tous les champs non définis dans le schéma. Utile pour nettoyer les données avant l'envoi à une API qui n'attend que des champs spécifiques.
 
-'partial' : Rend tous les champs de niveau racine du schéma optionnels et autorise les champs supplémentaires. La stratégie la plus permissive pour les mises à jour partielles.
+    ```typescript
+    const RemoveExtraSchema = z.object({ id: z.string() });
+    // { id: "123", extra: "value" } ➡️ Succès (extra est supprimé)
+    ```
 
-const PartialSchema = z.object({ name: z.string(), email: z.string() });
-// { name: "Alice", extra: "value" } ➡️ Succès (email est optionnel, extra est inclus)
+  * **'partial-strict'** : Rend tous les champs de niveau racine du schéma optionnels, mais rejette tout champ supplémentaire non défini. Idéal pour les mises à jour partielles où la structure des données doit rester contrôlée.
 
-🧩 Modifications Structurelles du Schéma (schemaModification)
+    ```typescript
+    const PartialStrictSchema = z.object({ name: z.string(), email: z.string() });
+    // { name: "Alice" } ➡️ Succès (email est optionnel)
+    // { name: "Alice", extra: "value" } ➡️ Échec (extra non reconnu)
+    ```
+
+  * **'partial'** : Rend tous les champs de niveau racine du schéma optionnels et autorise les champs supplémentaires. La stratégie la plus permissive pour les mises à jour partielles.
+
+    ```typescript
+    const PartialSchema = z.object({ name: z.string(), email: z.string() });
+    // { name: "Alice", extra: "value" } ➡️ Succès (email est optionnel, extra est inclus)
+    ```
+
+### 🧩 Modifications Structurelles du Schéma (`schemaModification`)
+
 Adaptez la forme de votre schéma de base en le combinant avec d'autres schémas.
 
-'default' (Défaut) : Aucune modification. Le schéma de base est utilisé tel quel.
+  * **'default'** (Défaut) : Aucune modification. Le schéma de base est utilisé tel quel.
 
-'mergeWithAnd' : Combine votre schéma de base avec un ou plusieurs additionalSchemas en utilisant une logique ET. Les données doivent satisfaire tous les schémas fusionnés. Idéal pour composer des schémas complexes à partir de modules plus petits.
+  * **'mergeWithAnd'** : Combine votre schéma de base avec un ou plusieurs `additionalSchemas` en utilisant une logique ET. Les données doivent satisfaire tous les schémas fusionnés. Idéal pour composer des schémas complexes à partir de modules plus petits.
 
-const UserBase = z.object({ id: z.string() });
-const UserDetails = z.object({ name: z.string(), email: z.string().email() });
-const UserRole = z.object({ role: z.string() });
+    ```typescript
+    const UserBase = z.object({ id: z.string() });
+    const UserDetails = z.object({ name: z.string(), email: z.string().email() });
+    const UserRole = z.object({ role: z.string() });
 
-// Le schéma résultant attendra { id, name, email, role }
-const mergedSchema = processAndValidateFormData(UserBase, { /* data */ }, {
-  schemaModification: 'mergeWithAnd',
-  additionalSchemas: [UserDetails, UserRole]
-});
+    // Le schéma résultant attendra { id, name, email, role }
+    const mergedSchema = processAndValidateFormData(UserBase, { /* data */ }, {
+      schemaModification: 'mergeWithAnd',
+      additionalSchemas: [UserDetails, UserRole]
+    });
+    ```
 
-'mergeWithOr' : Crée une union entre votre schéma de base et un ou plusieurs additionalSchemas en utilisant une logique OU. Les données doivent satisfaire au moins un des schémas fournis. Parfait pour les champs polymorphiques ou les types de données alternatifs.
+  * **'mergeWithOr'** : Crée une union entre votre schéma de base et un ou plusieurs `additionalSchemas` en utilisant une logique OU. Les données doivent satisfaire au moins un des schémas fournis. Parfait pour les champs polymorphiques ou les types de données alternatifs.
 
-const ArticleSchema = z.object({ type: z.literal('article'), title: z.string() });
-const VideoSchema = z.object({ type: z.literal('video'), url: z.string().url() });
+    ```typescript
+    const ArticleSchema = z.object({ type: z.literal('article'), title: z.string() });
+    const VideoSchema = z.object({ type: z.literal('video'), url: z.string().url() });
 
-// Le schéma résultant validera soit un article, soit une vidéo
-const unionSchema = processAndValidateFormData(ArticleSchema, { /* data */ }, {
-  schemaModification: 'mergeWithOr',
-  additionalSchemas: [VideoSchema]
-});
+    // Le schéma résultant validera soit un article, soit une vidéo
+    const unionSchema = processAndValidateFormData(ArticleSchema, { /* data */ }, {
+      schemaModification: 'mergeWithOr',
+      additionalSchemas: [VideoSchema]
+    });
+    ```
 
-🔄 Transformations Puissantes
-Appliquez des logiques de transformation complexes à vos données après l'extraction mais avant la validation Zod finale. Cela complète les capacités de .transform() et .coerce de Zod, vous permettant des manipulations ad-hoc.
+### 🔄 Transformations Puissantes
 
+Appliquez des logiques de transformation complexes à vos données après l'extraction mais avant la validation Zod finale. Cela complète les capacités de `.transform()` et `.coerce` de Zod, vous permettant des manipulations ad-hoc.
+
+```typescript
 const MySchema = z.object({
   email: z.string().email(),
   tags: z.array(z.string()),
@@ -211,7 +244,7 @@ const MySchema = z.object({
 });
 
 const rawData = {
-  email: '   MY_EMAIL@EXAMPLE.COM   ',
+  email: '    MY_EMAIL@EXAMPLE.COM    ',
   tags: 'tag1, tag2 , tag3',
   price: '123.45'
 };
@@ -228,10 +261,13 @@ if (result.success) {
   console.log(result.data);
   // { email: 'my_email@example.com', tags: ['tag1', 'tag2', 'tag3'], price: 123.45 }
 }
+```
 
-📎 Support Complet des Fichiers et FormData
-Gérez les File et Blob directement dans votre schéma et préparez les données pour les envois multipart/form-data.
+### 📎 Support Complet des Fichiers et FormData
 
+Gérez les `File` et `Blob` directement dans votre schéma et préparez les données pour les envois `multipart/form-data`.
+
+```typescript
 import { z } from 'zod';
 import { processAndValidateFormData } from 'ak-zod-form-kit';
 
@@ -261,10 +297,13 @@ if (result.success) {
 } else {
   console.error("Erreurs d'upload:", result.errors);
 }
+```
 
-🎛️ Extraction Flexible et Données Additionnelles
+### 🎛️ Extraction Flexible et Données Additionnelles
+
 Contrôlez précisément quels champs sont extraits, renommés, inclus ou exclus, et fusionnez des données provenant d'autres sources.
 
+```typescript
 const UserProfileSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
@@ -306,11 +345,17 @@ if (result.success) {
   }
   */
 }
+```
 
-📚 Exemples d'usage
-🔐 Formulaire d'inscription avancé
+-----
+
+## 📚 Exemples d'usage
+
+### 🔐 Formulaire d'inscription avancé
+
 Un cas d'usage classique, avec des validations croisées et des transformations.
 
+```typescript
 import { z } from 'zod';
 import { processAndValidateFormData } from 'ak-zod-form-kit';
 
@@ -344,10 +389,13 @@ async function handleRegisterSubmit(event: React.FormEvent<HTMLFormElement>) {
     console.error("Erreurs d'inscription:", result.errors);
   }
 }
+```
 
-⚛️ Intégration avec React Hook Form (ou autres)
+### ⚛️ Intégration avec React Hook Form (ou autres)
+
 Zod Form Kit peut travailler de concert avec d'autres librairies de formulaires, bien que souvent il puisse les remplacer pour la logique de validation et transformation. Ici, nous montrons comment l'utiliser pour des transformations ou l'ajout de données après la validation initiale de RHF.
 
+```typescript
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'; // Pour intégrer Zod avec RHF
@@ -418,10 +466,13 @@ function MyForm() {
 }
 
 export default MyForm; // Pour l'utiliser dans votre application React
+```
 
-🎨 Gestion d'erreurs dans l'UI
+### 🎨 Gestion d'erreurs dans l'UI
+
 Intégrez facilement les erreurs formatées dans votre interface utilisateur pour un feedback instantané.
 
+```typescript
 import React, { useState } from 'react';
 import { z } from 'zod';
 import { processAndValidateFormData } from 'ak-zod-form-kit';
@@ -488,62 +539,71 @@ function ContactForm() {
 }
 
 export default ContactForm; // Pour l'utiliser dans votre application React
+```
 
-🔧 API Reference
-processAndValidateFormData<T extends z.ZodRawShape>(schema: z.ZodObject<T>, inputData: FormData | Record<string, unknown>, options?: FormDataProcessingOptions<T>): ProcessedFormDataResult<T>
+-----
+
+## 🔧 API Reference
+
+### `processAndValidateFormData<T extends z.ZodRawShape>(schema: z.ZodObject<T>, inputData: FormData | Record<string, unknown>, options?: FormDataProcessingOptions<T>): ProcessedFormDataResult<T>`
+
 La fonction principale qui orchestre le traitement, la transformation et la validation de vos données.
 
-schema: Votre schéma Zod principal définissant la structure et les règles de validation attendues.
+  * `schema`: Votre **schéma Zod** principal définissant la structure et les règles de validation attendues.
+  * `inputData`: Les données brutes à traiter, qui peuvent être un objet `FormData` (directement issu d'un formulaire HTML) ou un objet JavaScript (`Record<string, unknown>`).
+  * `options?`: Un objet de configuration optionnel pour personnaliser le pipeline de traitement. Voir `FormDataProcessingOptions` ci-dessous.
 
-inputData: Les données brutes à traiter, qui peuvent être un objet FormData (directement issu d'un formulaire HTML) ou un objet JavaScript (Record<string, unknown>).
+Retourne un objet de type `ProcessedFormDataResult<T>`.
 
-options?: Un objet de configuration optionnel pour personnaliser le pipeline de traitement. Voir FormDataProcessingOptions ci-dessous.
+### `FormDataProcessingOptions<T extends z.ZodRawShape>`
 
-Retourne un objet de type ProcessedFormDataResult<T>.
+Étend l'interface `FormDataExtractionOptions`.
 
-FormDataProcessingOptions<T extends z.ZodRawShape>
-Étend l'interface FormDataExtractionOptions.
+  * `validationStrategy?: ValidationStrategy;` (par défaut: `'strict'`)
+    La stratégie de validation à utiliser pour contrôler le comportement des champs du schéma dynamique. Détermine comment Zod gère les champs non déclarés (les autorise, les supprime, ou les rejette) et définit l'optionalité des champs. Voir la section "Stratégies de Validation Intelligentes" pour plus de détails.
 
-validationStrategy?: ValidationStrategy; (par défaut: 'strict')
-La stratégie de validation à utiliser pour contrôler le comportement des champs du schéma dynamique. Détermine comment Zod gère les champs non déclarés (les autorise, les supprime, ou les rejette) et définit l'optionalité des champs. Voir la section "Stratégies de Validation Intelligentes" pour plus de détails.
+  * `schemaModification?: SchemaModification;` (par défaut: `'default'`)
+    La modification structurelle à appliquer au schéma de base avant toute validation. Permet de combiner le schéma principal avec d'autres schémas via des logiques de fusion (AND) ou d'union (OR). Voir la section "Modifications Structurelles du Schéma" pour plus de détails.
 
-schemaModification?: SchemaModification; (par défaut: 'default')
-La modification structurelle à appliquer au schéma de base avant toute validation. Permet de combiner le schéma principal avec d'autres schémas via des logiques de fusion (AND) ou d'union (OR). Voir la section "Modifications Structurelles du Schéma" pour plus de détails.
+  * `additionalSchemas?: z.ZodTypeAny[];`
+    Un tableau de schémas Zod supplémentaires à utiliser en conjonction avec la `schemaModification`. Si `schemaModification` est défini sur `'mergeWithAnd'`, ces schémas seront fusionnés (logique ET) avec le schéma de base. Si c'est `'mergeWithOr'`, une union (logique OU) sera créée entre tous les schémas.
 
-additionalSchemas?: z.ZodTypeAny[];
-Un tableau de schémas Zod supplémentaires à utiliser en conjonction avec la schemaModification. Si schemaModification est défini sur 'mergeWithAnd', ces schémas seront fusionnés (logique ET) avec le schéma de base. Si c'est 'mergeWithOr', une union (logique OU) sera créée entre tous les schémas.
+  * `transformations?: { [K in keyof T]?: T[K] extends z.ZodTypeAny ? (value: SchemaFieldType<T[K]>) => SchemaFieldType<T[K]> : never; };`
+    Un objet de fonctions de transformation personnalisées à appliquer aux champs après l'extraction mais avant la validation Zod finale. Ces transformations sont utiles pour des logiques spécifiques non gérées par `.transform()` ou `.coerce` de Zod.
 
-transformations?: { [K in keyof T]?: T[K] extends z.ZodTypeAny ? (value: SchemaFieldType<T[K]>) => SchemaFieldType<T[K]> : never; };
-Un objet de fonctions de transformation personnalisées à appliquer aux champs après l'extraction mais avant la validation Zod finale. Ces transformations sont utiles pour des logiques spécifiques non gérées par .transform() ou .coerce de Zod.
+  * `outputFormat?: 'object' | 'formData';` (par défaut: `'object'`)
+    Spécifie le format des données retournées dans la propriété `data` en cas de succès de la validation. `object` retourne un objet JavaScript typé ; `formData` retourne un objet `FormData`.
 
-outputFormat?: 'object' | 'formData'; (par défaut: 'object')
-Spécifie le format des données retournées dans la propriété data en cas de succès de la validation. object retourne un objet JavaScript typé ; formData retourne un objet FormData.
+  * `additionalData?: Record<string, unknown>;`
+    Un objet contenant des données supplémentaires à fusionner avec les données extraites du formulaire. Ces données sont fusionnées avant la validation Zod, permettant de valider un ensemble complet de données (formulaire + ajoutées).
 
-additionalData?: Record<string, unknown>;
-Un objet contenant des données supplémentaires à fusionner avec les données extraites du formulaire. Ces données sont fusionnées avant la validation Zod, permettant de valider un ensemble complet de données (formulaire + ajoutées).
+### `FormDataExtractionOptions`
 
-FormDataExtractionOptions
-keyTransforms?: Record<string, string>;
-Un objet de mappage pour renommer les clés des champs extraits. Utile si les noms de vos inputs HTML diffèrent des noms de propriétés de votre schéma. Ex: { 'user_email_input': 'email' }.
+  * `keyTransforms?: Record<string, string>;`
+    Un objet de mappage pour renommer les clés des champs extraits. Utile si les noms de vos inputs HTML diffèrent des noms de propriétés de votre schéma. Ex: `{ 'user_email_input': 'email' }`.
 
-excludeFields?: string[];
-Un tableau de noms de champs à ignorer complètement lors de l'extraction. Ex: ['_csrf_token', 'password_confirm'].
+  * `excludeFields?: string[];`
+    Un tableau de noms de champs à ignorer complètement lors de l'extraction. Ex: `['_csrf_token', 'password_confirm']`.
 
-includeFields?: string[];
-Un tableau de noms de champs à inclure exclusivement. Si cette option est spécifiée, seuls les champs listés ici seront extraits. excludeFields prime si un champ est présent dans les deux listes.
+  * `includeFields?: string[];`
+    Un tableau de noms de champs à inclure exclusivement. Si cette option est spécifiée, seuls les champs listés ici seront extraits. `excludeFields` prime si un champ est présent dans les deux listes.
 
-ProcessedFormDataResult<T extends z.ZodRawShape>
-Le type de retour de la fonction processAndValidateFormData.
+### `ProcessedFormDataResult<T extends z.ZodRawShape>`
 
-En cas de succès (success: true):
+Le type de retour de la fonction `processAndValidateFormData`.
 
+**En cas de succès (`success: true`):**
+
+```typescript
 {
   success: true;
   data: z.infer<z.ZodObject<T>> | FormData; // Les données validées, typées, soit en objet, soit en FormData
 }
+```
 
-En cas d'échec (success: false):
+**En cas d'échec (`success: false`):**
 
+```typescript
 {
   success: false;
   data: Record<string, unknown>; // Les données (brutes/transformées) ayant échoué la validation, pour le débogage/affichage
@@ -551,188 +611,135 @@ En cas d'échec (success: false):
   errorsInArray: { key: string; message: string }[]; // Erreurs formatées en tableau d'objets ({ key: 'champ', message: '...' })
   errorsInString: string; // Erreurs formatées en chaîne de caractères (chaque erreur sur une nouvelle ligne)
 }
+```
 
-Fonctions utilitaires exportées
-Ces fonctions sont les briques de base utilisées par processAndValidateFormData et peuvent être importées et utilisées indépendamment si vous avez besoin d'une logique plus granulaire.
+### Fonctions utilitaires exportées
 
-extractDataFromFormData(data: FormData | Record<string, unknown>, options?: FormDataExtractionOptions): Record<string, unknown>
-Extrait et organise les données d'un objet FormData ou Record<string, unknown> avec des options de transformation de clés, inclusion/exclusion.
+Ces fonctions sont les briques de base utilisées par `processAndValidateFormData` et peuvent être importées et utilisées indépendamment si vous avez besoin d'une logique plus granulaire.
 
-applyDataTransformations(data: Record<string, unknown>, transformations: Record<string, (value: unknown) => unknown>): Record<string, unknown>
-Applique un ensemble de fonctions de transformation à des champs spécifiques d'un objet de données.
+  * `extractDataFromFormData(data: FormData | Record<string, unknown>, options?: FormDataExtractionOptions): Record<string, unknown>`
+    Extrait et organise les données d'un objet `FormData` ou `Record<string, unknown>` avec des options de transformation de clés, inclusion/exclusion.
 
-convertObjectToFormData(inputObject: Record<string, unknown>): FormData
-Convertit un objet JavaScript standard en un objet FormData, gérant les types complexes (fichiers, blobs, dates, tableaux, objets imbriqués).
+  * `applyDataTransformations(data: Record<string, unknown>, transformations: Record<string, (value: unknown) => unknown>): Record<string, unknown>`
+    Applique un ensemble de fonctions de transformation à des champs spécifiques d'un objet de données.
 
-createDynamicZodSchema<T extends z.ZodRawShape>(baseSchema: z.ZodObject<T>, inputData: Record<string, unknown>, validationStrategy?: ValidationStrategy, schemaModification?: SchemaModification, additionalSchemas?: z.ZodTypeAny[]): z.ZodTypeAny
-Construit un schéma Zod dynamique basé sur un schéma de base, la structure des données d'entrée, et les stratégies de validation/modification spécifiées.
+  * `convertObjectToFormData(inputObject: Record<string, unknown>): FormData`
+    Convertit un objet JavaScript standard en un objet `FormData`, gérant les types complexes (fichiers, blobs, dates, tableaux, objets imbriqués).
 
-validateDataWithDynamicSchema<T extends z.ZodRawShape>(baseSchema: z.ZodObject<T>, data: Record<string, unknown>, validationStrategy?: ValidationStrategy, schemaModification?: SchemaModification, additionalSchemas?: z.ZodTypeAny[]): z.ZodSafeParseResult<z.infer<ReturnType<typeof createDynamicZodSchema<T>>>>
-Valide un objet de données en utilisant un schéma Zod dynamique créé à partir du baseSchema, data et des options de stratégie/modification.
+  * `createDynamicZodSchema<T extends z.ZodRawShape>(baseSchema: z.ZodObject<T>, inputData: Record<string, unknown>, validationStrategy?: ValidationStrategy, schemaModification?: SchemaModification, additionalSchemas?: z.ZodTypeAny[]): z.ZodTypeAny`
+    Construit un schéma Zod dynamique basé sur un schéma de base, la structure des données d'entrée, et les stratégies de validation/modification spécifiées.
 
-formatZodErrorsAsObject(validationResult: z.ZodSafeParseResult<any>): { [key: string]: string }
-Convertit les erreurs détaillées d'un résultat de validation Zod en un objet plat (chemin du champ -> message).
+  * `validateDataWithDynamicSchema<T extends z.ZodRawShape>(baseSchema: z.ZodObject<T>, data: Record<string, unknown>, validationStrategy?: ValidationStrategy, schemaModification?: SchemaModification, additionalSchemas?: z.ZodTypeAny[]): z.ZodSafeParseResult<z.infer<ReturnType<typeof createDynamicZodSchema<T>>>>`
+    Valide un objet de données en utilisant un schéma Zod dynamique créé à partir du `baseSchema`, `data` et des options de stratégie/modification.
 
-formatZodErrorsAsArray(validationResult: z.ZodSafeParseResult<any>): { key: string; message: string }[]
-Convertit les erreurs détaillées d'un résultat de validation Zod en un tableau d'objets ({ key: string; message: string }).
+  * `formatZodErrorsAsObject(validationResult: z.ZodSafeParseResult<any>): { [key: string]: string }`
+    Convertit les erreurs détaillées d'un résultat de validation Zod en un objet plat (chemin du champ -\> message).
 
-🎯 Cas d'usage recommandés
-AK Zod Form Kit est une solution idéale pour :
+  * `formatZodErrorsAsArray(validationResult: z.ZodSafeParseResult<any>): { key: string; message: string }[]`
+    Convertit les erreurs détaillées d'un résultat de validation Zod en un tableau d'objets (`{ key: string; message: string }`).
 
-✅ Les formulaires complexes avec des validations métier spécifiques.
+-----
 
-✅ L'upload de fichiers accompagnés de métadonnées.
+## 🎯 Cas d'usage recommandés
 
-✅ La gestion des APIs hybrides nécessitant à la fois du JSON et du multipart/form-data.
+**AK Zod Form Kit** est une solution idéale pour :
 
-✅ La transformation de données brutes avant leur envoi à un backend.
+  * ✅ Les formulaires complexes avec des validations métier spécifiques.
+  * ✅ L'upload de fichiers accompagnés de métadonnées.
+  * ✅ La gestion des APIs hybrides nécessitant à la fois du JSON et du `multipart/form-data`.
+  * ✅ La transformation de données brutes avant leur envoi à un backend.
+  * ✅ Les applications construites avec React, Vue, Angular, ou tout autre framework JavaScript.
+  * ✅ La mise en place d'une validation côté client robuste et typée.
+  * ✅ Les scénarios d'intégration de données où les formats d'entrée peuvent varier ou nécessitent un nettoyage.
 
-✅ Les applications construites avec React, Vue, Angular, ou tout autre framework JavaScript.
+**⚠️ Éviter pour :**
 
-✅ La mise en place d'une validation côté client robuste et typée.
+  * Les formulaires très simples où l'overhead de la bibliothèque serait inutile.
+  * Les scénarios de performance ultra-critique où une validation native ou manuelle très minimaliste serait préférée (bien que Zod soit déjà très performant).
+  * Les projets sans TypeScript, car une grande partie des avantages de typage et de sécurité serait perdue.
 
-✅ Les scénarios d'intégration de données où les formats d'entrée peuvent varier ou nécessitent un nettoyage.
+-----
 
-⚠️ Éviter pour :
+## 📊 Comparaison (vs. Validation manuelle, Formik, React Hook Form)
 
-Les formulaires très simples où l'overhead de la bibliothèque serait inutile.
+| Fonctionnalité             | AK Zod Form Kit       | Formik                     | React Hook Form            | Validation manuelle       |
+| :------------------------- | :-------------------- | :------------------------- | :------------------------- | :------------------------ |
+| Validation Zod Intégrée    | ✅                    | ⚠️ (avec yup)              | ✅ (avec zodResolver)      | ❌                        |
+| Transformation automatique | ✅ (via transformations et Zod) | ❌                         | ❌                         | ❌                        |
+| Support FormData natif     | ✅                    | ❌ (nécessite Formik-persist ou équivalent) | ⚠️ (nécessite adapter)     | ✅ (natif)                |
+| Framework agnostic         | ✅                    | ❌ (principalement React)  | ❌ (principalement React)  | ✅                        |
+| API simple et unifiée      | ✅                    | ⚠️                         | ⚠️                         | ❌                        |
+| Bundle size                | 📦 Léger (\~10KB gzipped) | 📦 Moyen                   | 📦 Léger                   | 📦 Aucun                  |
+| Typage TypeScript          | ✅ (fort)             | ✅                         | ✅                         | ❌                        |
 
-Les scénarios de performance ultra-critique où une validation native ou manuelle très minimaliste serait préférée (bien que Zod soit déjà très performant).
+-----
 
-Les projets sans TypeScript, car une grande partie des avantages de typage et de sécurité serait perdue.
+## 🚀 Roadmap
 
-📊 Comparaison (vs. Validation manuelle, Formik, React Hook Form)
-Fonctionnalité            
+Votre avis est précieux pour orienter les futures évolutions \!
 
-AK Zod Form Kit
+  * [ ] v1.1 : Support amélioré des schémas imbriqués complexes et des tableaux d'objets.
+  * [ ] v1.2 : Plugins de transformation courants (gestion des dates, monnaie, etc.).
+  * [ ] v1.3 : Intégrations officielles avec des librairies de formulaires populaires (Formik, React Hook Form, Final Form) pour des scénarios hybrides.
+  * [ ] v1.4 : Gestion native des arrays de fichiers multiples via `FormData`.
+  * [ ] v2.0 : Architecture de middleware extensible pour des traitements encore plus personnalisés.
 
-Formik        
+-----
 
-React Hook Form
+## 🤝 Contribution
 
-Validation manuelle
+Les contributions sont les bienvenues \! N'hésitez pas à proposer des améliorations, des corrections de bugs ou de nouvelles fonctionnalités.
 
-Validation Zod Intégrée
+1.  Fork le projet.
+2.  Créez une branche pour votre fonctionnalité (`git checkout -b feature/ma-super-feature`).
+3.  Commitez vos changements (`git commit -m 'Ajout d'une super fonctionnalité'`).
+4.  Poussez vers votre branche (`git push origin feature/ma-super-feature`).
+5.  Ouvrez une Pull Request.
 
-✅              
+### Développement local
 
-⚠️ (avec yup)
-
-✅ (avec zodResolver)
-
-❌                  
-
-Transformation automatique
-
-✅ (via transformations et Zod)
-
-❌          
-
-❌              
-
-❌                  
-
-Support FormData natif
-
-✅              
-
-❌ (nécessite Formik-persist ou équivalent)
-
-⚠️ (nécessite adapter)
-
-✅ (natif)          
-
-Framework agnostic
-
-✅              
-
-❌ (principalement React)
-
-❌ (principalement React)
-
-✅                  
-
-API simple et unifiée
-
-✅              
-
-⚠️            
-
-⚠️              
-
-❌                  
-
-Bundle size
-
-📦 Léger (~10KB gzipped)
-
-📦 Moyen    
-
-📦 Léger        
-
-📦 Aucun            
-
-Typage TypeScript
-
-✅ (fort)      
-
-✅            
-
-✅              
-
-❌                  
-
-🚀 Roadmap
-Votre avis est précieux pour orienter les futures évolutions !
-
-[ ] v1.1 : Support amélioré des schémas imbriqués complexes et des tableaux d'objets.
-
-[ ] v1.2 : Plugins de transformation courants (gestion des dates, monnaie, etc.).
-
-[ ] v1.3 : Intégrations officielles avec des librairies de formulaires populaires (Formik, React Hook Form, Final Form) pour des scénarios hybrides.
-
-[ ] v1.4 : Gestion native des arrays de fichiers multiples via FormData.
-
-[ ] v2.0 : Architecture de middleware extensible pour des traitements encore plus personnalisés.
-
-🤝 Contribution
-Les contributions sont les bienvenues ! N'hésitez pas à proposer des améliorations, des corrections de bugs ou de nouvelles fonctionnalités.
-
-Fork le projet.
-
-Créez une branche pour votre fonctionnalité (git checkout -b feature/ma-super-feature).
-
-Commitez vos changements (git commit -m 'Ajout d'une super fonctionnalité').
-
-Poussez vers votre branche (git push origin feature/ma-super-feature).
-
-Ouvrez une Pull Request.
-
-Développement local
+```bash
 git clone https://github.com/AndersonKouadio/ak-zod-form-kit.git
 cd ak-zod-form-kit
 npm install
+```
 
-# Lancer les tests
+**\# Lancer les tests**
+
+```bash
 npm test
 npm run test:watch
 npm run test:coverage
+```
 
-# Compiler le projet
+**\# Compiler le projet**
+
+```bash
 npm run build
+```
 
-# Linter le code (et corriger automatiquement)
+**\# Linter le code (et corriger automatiquement)**
+
+```bash
 npm run lint
 npm run lint:fix
+```
 
-📄 Licence
+-----
+
+## 📄 Licence
+
 Ce projet est sous licence MIT.
 
-🙏 Remerciements
-Zod pour son excellence en matière de validation TypeScript.
+-----
 
-TypeScript pour la sécurité et la robustesse des types.
+## 🙏 Remerciements
 
-La communauté open source pour l'inspiration et les outils.
+  * **Zod** pour son excellence en matière de validation TypeScript.
+  * **TypeScript** pour la sécurité et la robustesse des types.
+  * La communauté open source pour l'inspiration et les outils.
 
-<div align="center"> Fait avec ❤️ pour les développeurs qui aiment les formulaires typés. <br> ⭐ Star ce repo • 🐦 Suivre <a href="https://x.com/andy_jojo01">sur X</a> • 📖 Lire la doc (ce README !) </div>
+\<div align="center"\>
+Fait avec ❤️ pour les développeurs qui aiment les formulaires typés. \<br\>
+⭐ Star ce repo • 🐦 Suivre \<a href="[https://x.com/andy\_jojo01](https://x.com/andy_jojo01)"\>sur X\</a\> • 📖 Lire la doc (ce README \!)
+\</div\>
